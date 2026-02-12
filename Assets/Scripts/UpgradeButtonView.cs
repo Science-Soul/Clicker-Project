@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -9,6 +10,9 @@ public class UpgradeButtonView : MonoBehaviour
     [SerializeField] Button _button;
     [SerializeField] TextMeshProUGUI _priceText;
     [SerializeField] TextMeshProUGUI _upgradeLevelText;
+
+    [SerializeField] float _punchScale = 0.1f;
+    [SerializeField] float _animationDuration = 0.2f;
 
     private EconomyService _economyService;
     private UpgradeService _upgradeService;
@@ -39,6 +43,12 @@ public class UpgradeButtonView : MonoBehaviour
             })
             .AddTo(this);
 
-        _button.onClick.AddListener(() => _upgradeService.TryBuyUpgrade());
+        _button.onClick.AddListener(HandleClick);
+    }
+
+    private void HandleClick()
+    {
+        _upgradeService.TryBuyUpgrade();
+        transform.DOPunchScale(Vector3.one * _punchScale, _animationDuration);
     }
 }
